@@ -19,14 +19,39 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var events = require('events');
-var util = require('util');
+(function(global) {
+
+if (typeof require === 'function' && typeof module === 'object') {
+  var events = require('events');
+} else {
+  var events = global.events;
+};
+
+var util = {
+  inherits: function(ctor, superCtor) {
+    ctor.super_ = superCtor;
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  }
+};
 
 function Stream() {
   events.EventEmitter.call(this);
 }
 util.inherits(Stream, events.EventEmitter);
-module.exports = Stream;
+
+global['stream'] = { Stream: Stream };
+
+if (typeof module === 'object' && typeof module.exports === 'object') {
+  module.exports = Stream;
+};
+
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
 
@@ -138,3 +163,6 @@ Stream.prototype.pipe = function(dest, options) {
   // Allow for unix-like usage: A.pipe(B).pipe(C)
   return dest;
 };
+
+
+}(this));
