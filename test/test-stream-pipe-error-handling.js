@@ -19,8 +19,26 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var assert = require('assert');
-var Stream = require('../stream').Stream;
+if(typeof require === 'function') {
+  var Stream = require('../stream').Stream;
+  var assert = require('assert');
+} else {
+  var Stream = stream.Stream;
+};
+
+var util = {
+  inherits: function(ctor, superCtor) {
+    ctor.super_ = superCtor;
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  }
+};
 
 (function testErrorListenerCatches() {
   var source = new Stream();

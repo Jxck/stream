@@ -22,9 +22,24 @@
 // This test asserts that Stream.prototype.pipe does not leave listeners
 // hanging on the source or dest.
 
-var stream = require('../stream');
-var assert = require('assert');
-var util = require('util');
+if(typeof require === 'function') {
+  var stream = require('../stream');
+  var assert = require('assert');
+};
+
+var util = {
+  inherits: function(ctor, superCtor) {
+    ctor.super_ = superCtor;
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  }
+};
 
 function Writable() {
   this.writable = true;
