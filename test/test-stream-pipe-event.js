@@ -20,7 +20,7 @@
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 if(typeof require === 'function') {
-  var Stream = require('../stream');
+  var stream = require('../stream');
   var assert = require('assert');
 };
 
