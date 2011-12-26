@@ -1,0 +1,6 @@
+[submodule "lib/events"]
+	path = lib/events
+	url = https://Jxck@github.com/Jxck/events.git
+[submodule "lib/assert"]
+	path = lib/assert
+	url = https://Jxck@github.com/Jxck/assert.git
