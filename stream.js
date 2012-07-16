@@ -26,8 +26,10 @@
 
 if (typeof require === 'function' && typeof module === 'object') {
   var events = require('events');
+  module.exports = Stream;
 } else {
   var events = global.events;
+  global['stream'] = Stream;
 };
 
 var util = {
@@ -48,12 +50,6 @@ function Stream() {
   events.EventEmitter.call(this);
 }
 util.inherits(Stream, events.EventEmitter);
-
-global['stream'] = { Stream: Stream };
-
-if (typeof module === 'object' && typeof module.exports === 'object') {
-  module.exports = Stream;
-};
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -142,6 +138,5 @@ Stream.prototype.pipe = function(dest, options) {
   // Allow for unix-like usage: A.pipe(B).pipe(C)
   return dest;
 };
-
 
 }(this));
